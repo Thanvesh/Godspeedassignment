@@ -1,0 +1,19 @@
+summary: Fetch many MenuItems
+tasks:
+  - id: postgres_menuitems_search
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      params:
+      data: |
+          <js%{
+            const { entity_type, ...rest } = inputs.body;
+            const where = {
+              [`${entity_type}restaurantId`]: inputs.query.restaurantId,
+              ...rest
+            };
+            return { where };
+          }%>
+      config:
+        method: MenuItems.findMany
+      resultPath: $.menuItems

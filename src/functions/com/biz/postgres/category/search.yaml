@@ -1,0 +1,18 @@
+summary: Fetch many Category
+tasks:
+  - id: postgres_category_search
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      params:
+      data: |
+          <js%{
+            const { entity_type, ...rest } = inputs.body;
+            const where = {
+              [`${entity_type}name`]: inputs.query.name,
+              ...rest
+            };
+            return { where };
+          }%>
+      config:
+        method: Category.findMany

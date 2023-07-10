@@ -1,0 +1,28 @@
+summary: Fetch many Restaurant
+tasks:
+  - id: postgres_restaurant_search
+    fn: com.gs.datastore
+    args:
+      datasource: postgres
+      params:
+      data: |
+          <js%{
+            const { entity_type, couponCode, ...rest } = inputs.body;
+            const where = {
+              [`${entity_type}location`]: inputs.query.location,
+              ...rest
+            };
+            const include = {
+              menuItems: {}
+            };
+            if (couponCode) {
+              include.menuItems.where = {
+                couponCode: {
+                  equals: couponCode
+                }
+              };
+            }
+            return { where, include };
+          }%>
+      config:
+        method: Restaurant.findMany
