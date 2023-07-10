@@ -20,7 +20,10 @@ tasks:
                 couponCode: {
                   equals: couponCode
                 }
-              };
+              };  
+            }
+            else if (couponCode !== ""){
+              include.menuItems={}
             }
             return { where, include };
           }%>
